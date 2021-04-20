@@ -29,7 +29,7 @@ public class OpportunityDAOImpl implements OpportunityDao{
     @Override
     public int addOpportunity(Opportunity opportunity) {
         String sql  = "INSERT into opportunity(ed,date,location,skills) VALUES (?,?,?,?);";
-        int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(), opportunity.getED()});
+        int index = jdbcTemplate.update(sql, new Object[]{opportunity.getED(), opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills()});
         return index;
 
     }
@@ -42,10 +42,11 @@ public class OpportunityDAOImpl implements OpportunityDao{
     }
 
     @Override
-    public int updateOpportunity(Opportunity opportunity) {
+    public int updateOpportunity(Opportunity opportunity,Long id) {
         System.out.println("in dao it is "+opportunity);
-        String sql = "UPDATE opportunity SET  date=?, skills=?, location=?, ed=?";
-        int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(), opportunity.getED()});
+        String sql = "UPDATE opportunity SET  date=?, skills=?, location=?, ed=? where id=?";
+        int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(), opportunity.getED(),id});
+        System.out.println("index is "+index);
         return index;
     }
 }

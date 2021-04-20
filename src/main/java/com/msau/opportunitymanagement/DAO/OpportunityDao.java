@@ -12,6 +12,6 @@ public interface OpportunityDao {
 
     int deleteOpportunity(int id);
 
-    int updateOpportunity(Opportunity opportunity);
+    int updateOpportunity(Opportunity opportunity,Long id);
 
 }

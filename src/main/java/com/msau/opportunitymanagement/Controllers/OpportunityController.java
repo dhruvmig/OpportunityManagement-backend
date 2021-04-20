@@ -38,9 +38,10 @@ public class OpportunityController {
 
     @PutMapping(path="/opportunity/update/{id}")
     @ResponseBody
-    public int updateOpportunity(@RequestBody Opportunity opportunity){
+    public int updateOpportunity(@RequestBody Opportunity opportunity,@PathVariable("id")Long id){
 //        return 0;+
+        opportunity.setId(id);
         System.out.println("opprutoien is "+opportunity);
-        return OpportunityDao.updateOpportunity(opportunity);
+        return OpportunityDao.updateOpportunity(opportunity,opportunity.getId());
     }
 }
