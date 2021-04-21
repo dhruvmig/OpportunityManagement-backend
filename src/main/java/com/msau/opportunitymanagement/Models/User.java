@@ -3,7 +3,7 @@ package com.msau.opportunitymanagement.Models;
 public class User {
     private String name;
     private String email;
-    private String GID;
+    private String id;
     private String token;
     private String user_id;
 
@@ -23,12 +23,12 @@ public class User {
         this.email = email;
     }
 
-    public String getGID() {
-        return GID;
+    public String getId() {
+        return id;
     }
 
-    public void setGID(String GID) {
-        this.GID = GID;
+    public void setId(String GID) {
+        this.id = GID;
     }
 
     public String getToken() {
@@ -40,7 +40,7 @@ public class User {
     }
 
     public String getUser_id() {
-        return user_id;
+        return this.user_id;
     }
 
     public void setUser_id(String user_id) {
@@ -52,9 +52,11 @@ public class User {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", GID='" + GID + '\'' +
+                ", id='" + id + '\'' +
                 ", token='" + token + '\'' +
                 ", user_id='" + user_id + '\'' +
                 '}';
     }
+
+
 }
