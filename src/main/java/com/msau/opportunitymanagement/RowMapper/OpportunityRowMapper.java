@@ -14,11 +14,13 @@ public class OpportunityRowMapper implements RowMapper<Opportunity> {
         // TODO Auto-generated method stub
         Opportunity opportunity = new Opportunity();
 
-        opportunity.setId(rs.getLong("id"));
+        opportunity.setId(rs.getInt("id"));
         opportunity.setDate(rs.getString("date"));
         opportunity.setED(rs.getString("ed"));
         opportunity.setLocation(rs.getString("location"));
         opportunity.setSkills(rs.getString("skills"));
+        opportunity.setDescription(rs.getString("description"));
+        opportunity.setCreatedBy(rs.getString("createdBy"));
         return opportunity;
     }
 

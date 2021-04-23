@@ -14,7 +14,7 @@ public class UserController {
 
     @PostMapping(path="/login")
     @ResponseBody
-    public int login(@RequestBody User user, @RequestHeader(value="Authorization")String token){
+    public User login(@RequestBody User user, @RequestHeader(value="Authorization")String token){
         System.out.println("in login   "+user+ " "  + token);
         token = token.substring(20,30);
         System.out.println(token);

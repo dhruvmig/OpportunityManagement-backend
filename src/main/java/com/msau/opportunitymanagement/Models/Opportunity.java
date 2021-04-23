@@ -8,20 +8,40 @@ public class Opportunity implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private int id;
     private String ED;
     private String skills;
     private String date;
     private String location;
+    private String description;
+    private String createdBy;
 
     public Opportunity() { }
 
-    public Opportunity(Long id,String ED,String skills, String date,String location) {
+    public Opportunity(int id,String ED,String skills, String date,String location,String description,String createdBy) {
         this.id=id;
         this.ED=ED;
         this.skills = skills;
         this.date = date;
         this.location = location;
+        this.description = description;
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getED() {
@@ -36,10 +56,10 @@ public class Opportunity implements Serializable {
     public void setSkills(String skills) {
         this.skills = skills;
     }
-    public long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getDate() {

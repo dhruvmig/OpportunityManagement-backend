@@ -33,16 +33,19 @@ public class OpportunityController {
 
 
     }
-    @PostMapping(path="/opportunities/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path="/opportunities/add/{currentUser}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public int addOpportunity(@RequestBody Opportunity opportunity,@RequestHeader(value="Authorization")String token){
-        System.out.println("IN POST");
+    public Opportunity addOpportunity(@RequestBody Opportunity opportunity,@PathVariable("currentUser") String currentUser,@RequestHeader(value="Authorization")String token){
+//        System.out.println("IN POST"+opportunity);
+        opportunity.setCreatedBy(currentUser);
+        System.out.println("IN POST"+opportunity+currentUser);
         try{
+            System.out.println("in try add");
             return OpportunityDao.addOpportunity(opportunity);
         }
         catch(Exception e)
         {
-            return 0;
+            return null;
         }
 
     }
@@ -62,7 +65,7 @@ public class OpportunityController {
 
     @PutMapping(path="/opportunity/update/{id}")
     @ResponseBody
-    public int updateOpportunity(@RequestBody Opportunity opportunity,@PathVariable("id")Long id){
+    public int updateOpportunity(@RequestBody Opportunity opportunity,@PathVariable("id")int id){
         try{
             opportunity.setId(id);
             System.out.println("opprutoien is "+opportunity);
@@ -74,5 +77,13 @@ public class OpportunityController {
         }
 //        return 0;+
 
+    }
+
+    @GetMapping(path="/opportunity/getCreatedBy/{id}")
+    @ResponseBody
+    public String getCreatedBy(@PathVariable("id") int id)
+    {
+        System.out.println("id in controller is "+id);
+        return OpportunityDao.checkCreatedBy(id);
     }
 }

@@ -26,16 +26,17 @@ public class UserDaoImpl implements  UserDao{
         }
     }
     @Override
-    public int insertUser(User u, String token) {
+    public User insertUser(User u, String token) {
         String insertSql = "INSERT INTO user (name,email, id,user_id,token) VALUES (?,?,?,?,?)";
         int a =  jdbcTemplate.update(insertSql, new Object[]{u.getName(),u.getEmail(),u.getId(),u.getUser_id(),u.getToken()});
-        return a;
+        return u;
     }
 
     @Override
-    public int updateUser(User u, String token) {
+    public User updateUser(User u, String token) {
 
         String sql = "UPDATE user SET  token=? where email=?";
-        return jdbcTemplate.update(sql,new Object[]{u.getToken(),u.getEmail()});
+        int x= jdbcTemplate.update(sql,new Object[]{u.getToken(),u.getEmail()});
+        return u;
     }
 }

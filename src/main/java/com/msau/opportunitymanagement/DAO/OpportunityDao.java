@@ -8,10 +8,12 @@ public interface OpportunityDao {
 
     List<Opportunity> getOpportunities();
 
-    int addOpportunity(Opportunity opportunity);
+    Opportunity addOpportunity(Opportunity opportunity);
 
     int deleteOpportunity(int id);
 
-    int updateOpportunity(Opportunity opportunity,Long id);
+    int updateOpportunity(Opportunity opportunity,int id);
+
+    String checkCreatedBy(int id);
 
 }
