@@ -10,9 +10,9 @@ public interface OpportunityDao {
 
     Opportunity addOpportunity(Opportunity opportunity);
 
-    int deleteOpportunity(int id);
+    int deleteOpportunity(int id,String currentUser);
 
-    int updateOpportunity(Opportunity opportunity,int id);
+    int updateOpportunity(Opportunity opportunity,int id,String currentUser);
 
     String checkCreatedBy(int id);
 
