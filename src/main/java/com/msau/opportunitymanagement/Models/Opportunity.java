@@ -74,15 +74,17 @@ public class Opportunity implements Serializable {
     public void setLocation(String location) {
         this.location = location;
     }
+
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Opportunity{" +
                 "id=" + id +
                 ", ED='" + ED + '\'' +
                 ", skills='" + skills + '\'' +
                 ", date='" + date + '\'' +
                 ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                ", createdBy='" + createdBy + '\'' +
                 '}';
-
     }
 }

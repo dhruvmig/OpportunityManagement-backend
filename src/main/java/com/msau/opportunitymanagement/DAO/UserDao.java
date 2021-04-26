@@ -9,4 +9,5 @@ public interface UserDao {
 
     public User updateUser(User u,String token);
 
+    public String getUserName(String id);
 }

@@ -27,12 +27,21 @@ public class LogDaoImpl implements LogDao {
         log.setLogId(new Random().nextInt(100));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
-        System.out.println("date is"+formatter.format(date));
-        log.setDateTime(formatter.format(date));
-        String sql = "INSERT into logs(LogId,action,userId,opportunityId,dateTime) VALUES (?,?,?,?,?)";
-        int index = jdbcTemplate.update(sql, new Object[]{log.getLogId(), log.getAction(), log.getUserId(), log.getOpportunityId(), log.getDateTime()});
 
-        return log;
+        log.setDateTime(formatter.format(date));
+        System.out.println("date is"+formatter.format(date) + log);
+        String sql = "INSERT into logs(LogId,action,userId,opportunityId,dateTime,name,oldOpp,newOpp) VALUES (?,?,?,?,?,?,?,?)";
+        try{
+            int index = jdbcTemplate.update(sql, new Object[]{log.getLogId(), log.getAction(), log.getUserId(), log.getOpportunityId(), log.getDateTime(),log.getName(),log.getOldOpp(),log.getNewOpp()});
+            System.out.println("log added");
+            return log;
+        }
+        catch (Exception e)
+        {
+            System.out.println("exception to add log"+e);
+            return null;
+        }
+
     }
 
     @Override
@@ -40,6 +49,7 @@ public class LogDaoImpl implements LogDao {
         logger.info("inside get all logs");
         String sql = "SELECT * from logs";
         List<Logs> logs = jdbcTemplate.query(sql,new LogRowMapper());
+        System.out.println("logs are "+logs);
         return logs;
     }
 }

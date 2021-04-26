@@ -1,6 +1,7 @@
 package com.msau.opportunitymanagement.DAO;
 
 import com.msau.opportunitymanagement.Models.User;
+import com.msau.opportunitymanagement.RowMapper.OpportunityRowMapper;
 import com.msau.opportunitymanagement.RowMapper.UserRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +46,20 @@ public class UserDaoImpl implements  UserDao{
         String sql = "UPDATE user SET  token=? where email=?";
         int x= jdbcTemplate.update(sql,new Object[]{u.getToken(),u.getEmail()});
         return u;
+    }
+
+    @Override
+    public String getUserName(String id) {
+        String sql = "SELECT * from user where id="+id+";";
+        try{
+            User x = jdbcTemplate.queryForObject(sql,new UserRowMapper());
+            System.out.println("user name is "+x);
+            return x.getName();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
     }
 }

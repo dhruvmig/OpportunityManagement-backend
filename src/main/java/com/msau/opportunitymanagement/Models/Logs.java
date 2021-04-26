@@ -1,11 +1,40 @@
 package com.msau.opportunitymanagement.Models;
 
+
 public class Logs {
     private int LogId;
     private String action;
     private String userId;
     private int opportunityId;
     private String dateTime;
+    private String name;
+    private String oldOpp;
+    private String newOpp;
+
+    public String getOldOpp() {
+        return oldOpp;
+    }
+
+    public void setOldOpp(String oldOpp) {
+        this.oldOpp = oldOpp;
+    }
+
+    public String getNewOpp() {
+        return newOpp;
+    }
+
+    public void setNewOpp(String newOpp) {
+        this.newOpp = newOpp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        System.out.println("model name is "+name);
+        this.name = name;
+    }
 
     public int getLogId() {
         return LogId;
@@ -53,8 +82,11 @@ public class Logs {
                 "LogId=" + LogId +
                 ", action='" + action + '\'' +
                 ", userId='" + userId + '\'' +
-                ", opportunityId='" + opportunityId + '\'' +
+                ", opportunityId=" + opportunityId +
                 ", dateTime='" + dateTime + '\'' +
+                ", name='" + name + '\'' +
+                ", oldOpp=" + oldOpp +
+                ", newOpp=" + newOpp +
                 '}';
     }
 }

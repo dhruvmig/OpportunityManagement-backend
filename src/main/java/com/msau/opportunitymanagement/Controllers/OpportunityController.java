@@ -2,6 +2,7 @@ package com.msau.opportunitymanagement.Controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.msau.opportunitymanagement.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,7 @@ public class OpportunityController {
 
     @GetMapping(path="/opportunity/getCreatedBy/{id}")
     @ResponseBody
-    public String getCreatedBy(@PathVariable("id") int id)
+    public Opportunity getCreatedBy(@PathVariable("id") int id)
     {
         System.out.println("id in controller is "+id);
         return OpportunityDao.checkCreatedBy(id);
