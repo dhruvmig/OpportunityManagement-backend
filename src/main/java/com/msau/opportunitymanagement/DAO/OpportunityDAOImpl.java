@@ -1,5 +1,6 @@
 package com.msau.opportunitymanagement.DAO;
 
+import com.msau.opportunitymanagement.Exceptions.NoRecordFound;
 import com.msau.opportunitymanagement.Models.Logs;
 import com.msau.opportunitymanagement.Models.Opportunity;
 import com.msau.opportunitymanagement.Models.User;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Component
 public class OpportunityDAOImpl implements OpportunityDao{
@@ -30,36 +33,66 @@ public class OpportunityDAOImpl implements OpportunityDao{
         this.jdbcTemplate = jdbcTemplate;
     }
     @Override
-    public List<Opportunity> getOpportunities() {
+    public List<Opportunity> getOpportunities() throws NoRecordFound {
         String sql="SELECT * FROM opportunity;";
         log.info("Inside Get Opportunities DAO");
-        List<Opportunity> opportunityList = jdbcTemplate.query(sql,new OpportunityRowMapper());
+        List<Opportunity>opportunityList=new ArrayList<>();
+        try{
+             opportunityList = jdbcTemplate.query(sql,new OpportunityRowMapper());
+        }
+        catch (Exception e)
+        {
+            throw (NoRecordFound)e;
+        }
         return opportunityList;
     }
 
     @Override
     public Opportunity addOpportunity(Opportunity opportunity) {
         log.info("Inside add Opportunity DAO");
-        int generatedLong = new Random().nextInt(100);
-        opportunity.setId(generatedLong);
-        String sql  = "INSERT into opportunity(id,ed,date,location,skills,description,createdBy) VALUES (?,?,?,?,?,?,?);";
+        try{
+            String sql1="SELECT * FROM opportunity;";
 
-        jdbcTemplate.update(sql, new Object[]{opportunity.getId(),opportunity.getED(), opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(),opportunity.getDescription(),opportunity.getCreatedBy() });
+            List<Opportunity> opportunities=jdbcTemplate.query(sql1,new OpportunityRowMapper());
+            Random r = new Random( System.currentTimeMillis() );
+            int id = ((1 + r.nextInt(2)) * 1000000 + r.nextInt(1000000));
+            opportunity.setId(id);
+            System.out.println("id is "+id);
+//            System.out.println("Your UUID is: " + variant);
+//            if(opportunities.size()==0)
+//            {
+//                opportunity.setId(1);
+//            }
+//            else
+//            {
+//                opportunity.setId(opportunities.get(opportunities.size()-1).getId()+1);
+//            }
+            System.out.println("id is "+opportunity.getId());
+            String sql  = "INSERT into opportunity(id,ed,date,location,skills,description,createdBy) VALUES (?,?,?,?,?,?,?);";
 
-        Logs newLog = new Logs();
-        String userName = userDao.getUserName(opportunity.getCreatedBy());
+            jdbcTemplate.update(sql, new Object[]{opportunity.getId(),opportunity.getED(), opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(),opportunity.getDescription(),opportunity.getCreatedBy() });
 
-        newLog.setName(userName);
-        newLog.setOpportunityId(opportunity.getId());
-        newLog.setNewOpp(opportunity.toString());
-        newLog.setOldOpp("null");
-        newLog.setAction("Added new Opportunity");
+            Logs newLog = new Logs();
+            String userName = userDao.getUserName(opportunity.getCreatedBy());
 
-        newLog.setUserId(opportunity.getCreatedBy());
+            newLog.setName(userName);
+            newLog.setOpportunityId(opportunity.getId());
+            newLog.setNewOpp(opportunity.toString());
+            newLog.setOldOpp("null");
+            newLog.setAction("Added new Opportunity");
 
-        logDao.addLog(newLog);
+            newLog.setUserId(opportunity.getCreatedBy());
 
-        return opportunity;
+            logDao.addLog(newLog);
+
+            return opportunity;
+        }
+        catch (Exception e)
+        {
+            log.error("exception to add opporutnity"+e);
+            return null;
+        }
+
 
     }
 
@@ -96,7 +129,7 @@ public class OpportunityDAOImpl implements OpportunityDao{
 
         try{
             Opportunity x = checkCreatedBy(id);
-            int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(), opportunity.getED(),opportunity.getDescription(),opportunity.getCreatedBy(),id});
+            int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(),  opportunity.getSkills(), opportunity.getLocation(),opportunity.getED(),opportunity.getDescription(),opportunity.getCreatedBy(),id});
 
             Logs newLog = new Logs();
 

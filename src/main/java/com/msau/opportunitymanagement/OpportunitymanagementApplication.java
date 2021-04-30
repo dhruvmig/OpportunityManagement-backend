@@ -26,9 +26,7 @@ public class OpportunitymanagementApplication {
 
 		SpringApplication.run(OpportunitymanagementApplication.class, args);
 
-		System.out.println("\nAll Courses -------------------------------------\n");
-		List<Opportunity> courses = dao.getOpportunities();
-		courses.forEach(System.out::println);
+
 	}
 	@Bean
 	public CorsFilter corsFilter() {

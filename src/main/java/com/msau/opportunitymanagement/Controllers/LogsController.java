@@ -5,10 +5,7 @@ import com.msau.opportunitymanagement.Models.Logs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +33,12 @@ public class LogsController {
         Logs l = logsDao.addLog(logs);
 
         return 1;
+    }
+    @GetMapping(path="/getAudits/{id}")
+    public List<Logs> getLogs(@PathVariable("id")int id)
+    {
+        List<Logs> logs = new ArrayList<>();
+        logs = logsDao.getSpecificLogs(id);
+        return logs;
     }
 }

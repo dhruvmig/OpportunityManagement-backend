@@ -27,4 +27,10 @@ public class TrendsController {
         log.info("---- Inside get trends controller ----");
         return trendsDao.getSkills(trend);
     }
+
+    @GetMapping(path="/getTrends")
+    public void get()
+    {
+        trendsDao.getTrends();
+    }
 }

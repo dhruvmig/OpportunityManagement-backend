@@ -48,8 +48,24 @@ public class LogDaoImpl implements LogDao {
     public List<Logs> getLogs() {
         logger.info("inside get all logs");
         String sql = "SELECT * from logs";
+        try{
+            List<Logs> logs = jdbcTemplate.query(sql,new LogRowMapper());
+            return logs;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Logs> getSpecificLogs(int id) {
+        logger.info("inside get logs of particular opportunity ");
+        String sql = "SELECT * from logs where opportunityId="+id+ ";";
         List<Logs> logs = jdbcTemplate.query(sql,new LogRowMapper());
-        System.out.println("logs are "+logs);
+        System.out.println("particular logs are "+logs + id);
         return logs;
     }
+
+
 }

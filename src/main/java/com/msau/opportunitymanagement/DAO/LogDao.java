@@ -8,4 +8,6 @@ public interface LogDao {
 
     public Logs addLog(Logs log);
     public List<Logs> getLogs();
+
+    public List<Logs> getSpecificLogs(int id);
 }

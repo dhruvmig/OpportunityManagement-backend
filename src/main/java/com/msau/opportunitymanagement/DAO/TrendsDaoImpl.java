@@ -51,4 +51,57 @@ public class TrendsDaoImpl implements TrendsDao{
         });
         return item;
     }
+
+    @Override
+    public void getTrends() {
+        String query = "select year(date), skills, count(*) from opportunity group by year(date), skills order by year(date);";
+//        Map<String,List<Map<String,String>>> item = new HashMap<>();
+
+//        jdbcTemplate.query(sql, new RowCallbackHandler() {
+//
+//            @Override
+//            public void processRow(ResultSet rs) throws SQLException {
+//                System.out.println("here the result is "+rs);
+//                Map<String,String> x = new HashMap<>();
+//                List<Map<String,String>> l = new ArrayList<>();
+//                x.put("name",rs.getString(1));
+//                x.put("value",rs.getString(3));
+//                l.add(x);
+//
+//                item.put(rs.getString(2),l);
+//                System.out.println("x here is "+item);
+//            }
+//
+//        });
+        List <String> years=new ArrayList<>();
+        List <String> columns = new ArrayList<>();
+        long[][] data= new long[5][5];
+        jdbcTemplate.query(query,new RowCallbackHandler() {
+
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                String year = rs.getString(1);
+                String column = rs.getString(2);
+                if(!years.contains(year)) {
+                    years.add(year);
+                }
+                if(!columns.contains(column)) {
+                    columns.add(column);
+                }
+                data[columns.indexOf(column)][years.indexOf(year)] = rs.getInt(3);
+            }
+    });
+//        System.out.println("data i s"+data);
+        for(int i=0;i<data.length;i++)
+        {
+            for(int j=0;j<data[i].length;j++)
+            {
+                System.out.print(data[i][j]);
+            }
+            System.out.println();
+        }
 }
+
+}
+
+

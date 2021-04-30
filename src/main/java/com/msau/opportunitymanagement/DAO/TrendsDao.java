@@ -7,4 +7,6 @@ import java.util.Map;
 
 public interface TrendsDao {
     public List<Map<String,String>> getSkills(String trend);
+
+    public void getTrends();
 }
