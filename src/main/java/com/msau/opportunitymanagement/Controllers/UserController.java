@@ -35,4 +35,11 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    public String getUserName(@RequestBody String id)
+    {
+        logger.info("Inside get username controller");
+        return userDao.getUserName(id);
+    }
+
 }

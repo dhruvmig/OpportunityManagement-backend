@@ -1,6 +1,9 @@
 package com.msau.opportunitymanagement.DAO;
 
 //import jdk.internal.net.http.common.Pair;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,54 +56,57 @@ public class TrendsDaoImpl implements TrendsDao{
     }
 
     @Override
-    public void getTrends() {
-        String query = "select year(date), skills, count(*) from opportunity group by year(date), skills order by year(date);";
-//        Map<String,List<Map<String,String>>> item = new HashMap<>();
+//    public void getTrends() {
+//        String query = "select year(date), skills, count(*) from opportunity group by year(date), skills order by year(date);";
+//
+//    }
+    public ArrayNode getTrends(String trend) {
+        String Query="select year(date),"+ trend+", count(*) from opportunity group by year(date), "+ trend+" order by year(date); ";
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode outerList = mapper.createArrayNode();
 
-//        jdbcTemplate.query(sql, new RowCallbackHandler() {
-//
-//            @Override
-//            public void processRow(ResultSet rs) throws SQLException {
-//                System.out.println("here the result is "+rs);
-//                Map<String,String> x = new HashMap<>();
-//                List<Map<String,String>> l = new ArrayList<>();
-//                x.put("name",rs.getString(1));
-//                x.put("value",rs.getString(3));
-//                l.add(x);
-//
-//                item.put(rs.getString(2),l);
-//                System.out.println("x here is "+item);
-//            }
-//
-//        });
-        List <String> years=new ArrayList<>();
-        List <String> columns = new ArrayList<>();
-        long[][] data= new long[5][5];
-        jdbcTemplate.query(query,new RowCallbackHandler() {
 
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                String year = rs.getString(1);
-                String column = rs.getString(2);
-                if(!years.contains(year)) {
-                    years.add(year);
+        jdbcTemplate.query(Query, new RowCallbackHandler() {
+            public void processRow(ResultSet resultSet) throws SQLException {
+                ArrayNode innerList = mapper.createArrayNode();
+                ObjectNode innerNode = mapper.createObjectNode();
+                ObjectNode outerNode = mapper.createObjectNode();
+
+                innerNode.put("name", resultSet.getString(2));
+                innerNode.put("value", resultSet.getString(3));
+                innerList.add(innerNode);
+                innerNode=mapper.createObjectNode();
+                String currentString= resultSet.getString(1);
+                while(resultSet.next()) {
+                    if(currentString.equals(resultSet.getString(1))) {
+                        innerNode.put("name", resultSet.getString(2));
+                        innerNode.put("value", resultSet.getString(3));
+                        innerList.add(innerNode);
+                        System.out.println(currentString);
+                        innerNode = mapper.createObjectNode();
+                    }else {
+                        outerNode.put("name", currentString);
+                        outerNode.set("series", innerList);
+                        outerList.add(outerNode);
+                        outerNode=mapper.createObjectNode();
+                        innerList=mapper.createArrayNode();
+                        currentString = resultSet.getString(1);
+                        innerNode.put("name", resultSet.getString(2));
+                        innerNode.put("value", resultSet.getString(3));
+                        innerList.add(innerNode);
+                        innerNode=mapper.createObjectNode();
+                    }
                 }
-                if(!columns.contains(column)) {
-                    columns.add(column);
-                }
-                data[columns.indexOf(column)][years.indexOf(year)] = rs.getInt(3);
+                outerNode=mapper.createObjectNode();
+                outerNode.put("name", currentString);
+                outerNode.set("series", innerList);
+                outerList.add(outerNode);
+                System.out.println(outerList);
             }
-    });
-//        System.out.println("data i s"+data);
-        for(int i=0;i<data.length;i++)
-        {
-            for(int j=0;j<data[i].length;j++)
-            {
-                System.out.print(data[i][j]);
-            }
-            System.out.println();
-        }
-}
+        });
+
+        return outerList;
+    }
 
 }
 

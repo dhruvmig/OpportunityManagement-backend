@@ -22,6 +22,7 @@ public class OpportunityControllerTest {
 
 //    @Test
 //    public void shouldGetAllOpportunity() throws Exception {
+//        System.out.println("in test get opp");
 //        Mockito.when(opportunityDaoImp.getOpportunities()).thenReturn(new ArrayList<Opportunity>());
 //        mockMvc.perform(get("/opportunity").header("Authorizarion", "Bearer ljdsljflsjlfjlsjdljflsdjlfsjd")).andExpect(status().isOk());
 //    }

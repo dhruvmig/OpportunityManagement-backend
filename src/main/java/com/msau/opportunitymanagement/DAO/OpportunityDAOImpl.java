@@ -3,9 +3,7 @@ package com.msau.opportunitymanagement.DAO;
 import com.msau.opportunitymanagement.Exceptions.NoRecordFound;
 import com.msau.opportunitymanagement.Models.Logs;
 import com.msau.opportunitymanagement.Models.Opportunity;
-import com.msau.opportunitymanagement.Models.User;
 import com.msau.opportunitymanagement.RowMapper.OpportunityRowMapper;
-import com.msau.opportunitymanagement.RowMapper.UserRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 @Component
 public class OpportunityDAOImpl implements OpportunityDao{
@@ -28,7 +25,7 @@ public class OpportunityDAOImpl implements OpportunityDao{
     @Autowired
     UserDao userDao;
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
     public OpportunityDAOImpl(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
     }

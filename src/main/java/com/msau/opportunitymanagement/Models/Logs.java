@@ -11,6 +11,19 @@ public class Logs {
     private String oldOpp;
     private String newOpp;
 
+    public Logs(){}
+
+    public Logs(int logId, String action, String userId, int opportunityId, String dateTime, String name, String oldOpp, String newOpp) {
+        LogId = logId;
+        this.action = action;
+        this.userId = userId;
+        this.opportunityId = opportunityId;
+        this.dateTime = dateTime;
+        this.name = name;
+        this.oldOpp = oldOpp;
+        this.newOpp = newOpp;
+    }
+
     public String getOldOpp() {
         return oldOpp;
     }

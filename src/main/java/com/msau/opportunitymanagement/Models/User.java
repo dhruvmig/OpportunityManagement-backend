@@ -7,6 +7,16 @@ public class User {
     private String token;
     private String user_id;
 
+    public User(){}
+
+    public User(String name, String email, String id, String token, String user_id) {
+        this.name = name;
+        this.email = email;
+        this.id = id;
+        this.token = token;
+        this.user_id = user_id;
+    }
+
     public String getName() {
         return name;
     }

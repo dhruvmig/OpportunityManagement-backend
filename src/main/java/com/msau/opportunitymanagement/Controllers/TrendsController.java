@@ -1,6 +1,7 @@
 package com.msau.opportunitymanagement.Controllers;
 
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.msau.opportunitymanagement.DAO.TrendsDao;
 import com.msau.opportunitymanagement.Models.Opportunity;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,9 @@ public class TrendsController {
         return trendsDao.getSkills(trend);
     }
 
-    @GetMapping(path="/getTrends")
-    public void get()
+    @GetMapping(path="/getTrends/{trend}")
+    public ArrayNode get(@PathVariable("trend")String trend)
     {
-        trendsDao.getTrends();
+        return trendsDao.getTrends(trend);
     }
 }
