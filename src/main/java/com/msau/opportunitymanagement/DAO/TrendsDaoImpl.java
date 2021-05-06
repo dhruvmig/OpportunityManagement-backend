@@ -36,7 +36,6 @@ public class TrendsDaoImpl implements TrendsDao{
             jdbcTemplate.query(sql, new RowCallbackHandler() {
                 @Override
                 public void processRow(ResultSet rs) throws SQLException{
-                    System.out.println("class is "+rs.getClass()+"\t hello"+rs.toString());
                     Map<String, String> x = new HashMap<>();
                     x.put("name",rs.getString(1));
                     x.put("value",rs.getString(2));
@@ -58,10 +57,11 @@ public class TrendsDaoImpl implements TrendsDao{
         {
             System.out.println("exceptoin is "+e);
         }
-
         return  null;
-
     }
+
+
+
     public ArrayNode getTrends(String trend) {
         String Query="select year(date),"+ trend+", count(*) from opportunity group by year(date), "+ trend+" order by year(date); ";
         ObjectMapper mapper = new ObjectMapper();
@@ -103,10 +103,6 @@ public class TrendsDaoImpl implements TrendsDao{
                 System.out.println(outerList);
             }
         });
-
         return outerList;
     }
-
 }
-
-

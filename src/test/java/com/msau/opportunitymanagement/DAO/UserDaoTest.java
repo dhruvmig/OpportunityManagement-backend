@@ -67,22 +67,35 @@ public class UserDaoTest {
         Assert.assertEquals(result, "name");
     }
 
-//    @Test
-//    public void shouldInsertUser(){
-//        int tomatch = 8;
-//
-//        Mockito.when(jdbcTemplate.update(
-//                Mockito.anyString(),
-//                Mockito.any(UserRowMapper.class)
-//        )).thenReturn(tomatch);
-//        User result = userDao.insertUser(new User(), null);
-//        Assert.assertEquals(result, new User());
-//    }
+    @Test
+    public void shouldGetUserNameByIdCatchError(){
+        User tomatch = new User("name","email","1000401","ldjslfk",null);
+        Mockito.when(jdbcTemplate.queryForObject(
+                Mockito.anyString(),
+                Mockito.any(UserRowMapper.class)
+        )).thenReturn(tomatch);
+        String result = userDao.getUserName("856");
+        System.out.println(result);
+        Assert.assertEquals(result, "name");
+    }
+
+    @Test
+    public void shouldInsertUser(){
+        int tomatch = 8;
+
+        Mockito.when(jdbcTemplate.update(
+                Mockito.anyString(),
+                Mockito.any(UserRowMapper.class)
+        )).thenReturn(tomatch);
+        User x = new User();
+        User result = userDao.insertUser(x, null);
+        Assert.assertEquals(result,x);
+    }
 
     @Test
     public void shouldLoginUser() throws Exception {
 
-        User user = new User("Rishipal Singh","95rishipal@gmail.com","1","115640335689848772862","eyJhbGciOiJSUzI1NiIs");
+        User user = new User("Dhruv","abc@gmail.com","1","115640335689848772862","eyJhbGciOiJSUzI1NiIs");
         Mockito.when(userDao.findUser("95rishipal@gmail.com")).thenReturn(user);
         String token = "012345678901234567890";
         String json = objectMapper.writeValueAsString(user);
@@ -94,7 +107,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void shouldUpdateToken() {
+    public void shouldUpdateUser() {
         int tomatch = 8;
         Mockito.when(jdbcTemplate.update(
                 Mockito.anyString()

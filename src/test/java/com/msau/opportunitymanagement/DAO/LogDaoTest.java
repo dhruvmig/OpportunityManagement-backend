@@ -36,6 +36,9 @@ public class LogDaoTest {
     @InjectMocks
     LogDaoImpl logDao;
 
+    @Autowired
+    LogDaoImpl logDaos;
+
     @Test
     public void shouldGetAllLogs(){
         ArrayList<Logs> list = new ArrayList<>();
@@ -68,4 +71,10 @@ public class LogDaoTest {
         System.out.println("resulte here i s+"+res);
         Assert.assertEquals(res,1);
     }
+
+
+//    @Test
+//    public void shouldThrowExceptionToGetLogs(){
+//        Mockito.doThrow(new Exception()).when(logDao).getLogs();
+//    }
 }

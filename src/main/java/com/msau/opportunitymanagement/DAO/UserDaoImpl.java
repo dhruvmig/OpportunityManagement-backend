@@ -19,6 +19,24 @@ public class UserDaoImpl implements  UserDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+
+
+    @Override
+    public String getUserName(String id) {
+        logger.info("inside get user name" + id);
+        String sql = "SELECT * from user where id=" + id + ";";
+        try {
+            User x = jdbcTemplate.queryForObject(sql, new UserRowMapper());
+
+            System.out.println("user name is " + x);
+            return x.getName();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+
     @Override
     public User findUser(String user) {
         logger.info("inside Find User DAO");
@@ -35,8 +53,17 @@ public class UserDaoImpl implements  UserDao{
     @Override
     public User insertUser(User u, String token) {
         logger.info("inside insert user");
+
         String insertSql = "INSERT INTO user (name,email, id,user_id,token) VALUES (?,?,?,?,?)";
-        int a =  jdbcTemplate.update(insertSql, new Object[]{u.getName(),u.getEmail(),u.getId(),u.getUser_id(),u.getToken()});
+        int a =  jdbcTemplate.update(insertSql, new Object[]{u.getName()
+
+                ,u.getEmail()
+
+                ,u.getId()
+
+                ,u.getUser_id()
+
+                ,u.getToken()});
         return u;
     }
 
@@ -49,19 +76,5 @@ public class UserDaoImpl implements  UserDao{
         return u;
     }
 
-    @Override
-    public String getUserName(String id) {
-        logger.info("inside get user name"+id);
-        String sql = "SELECT * from user where id="+id+";";
-        try{
-            User x = jdbcTemplate.queryForObject(sql,new UserRowMapper());
-            System.out.println("user name is "+x);
-            return x.getName();
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
 
-    }
 }

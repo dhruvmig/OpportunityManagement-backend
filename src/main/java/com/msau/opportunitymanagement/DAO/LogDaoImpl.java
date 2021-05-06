@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +33,15 @@ public class LogDaoImpl implements LogDao {
         System.out.println("date is"+formatter.format(date) + log);
         String sql = "INSERT into logs(LogId,action,userId,opportunityId,dateTime,name,oldOpp,newOpp) VALUES (?,?,?,?,?,?,?,?)";
         try{
-            int index = jdbcTemplate.update(sql, new Object[]{log.getLogId(), log.getAction(), log.getUserId(), log.getOpportunityId(), log.getDateTime(),log.getName(),log.getOldOpp(),log.getNewOpp()});
+            int index = jdbcTemplate.update(sql, new Object[]{
+                    log.getLogId()
+                    , log.getAction()
+                    , log.getUserId()
+                    , log.getOpportunityId()
+                    , log.getDateTime()
+                    ,log.getName()
+                    ,log.getOldOpp()
+                    ,log.getNewOpp()});
             System.out.println("log added");
             return index;
         }
@@ -48,24 +57,29 @@ public class LogDaoImpl implements LogDao {
     public List<Logs> getLogs() {
         logger.info("inside get all logs");
         String sql = "SELECT * from logs";
+        List<Logs> logs=new ArrayList<>();
         try{
-            List<Logs> logs = jdbcTemplate.query(sql,new LogRowMapper());
-            return logs;
+             logs = jdbcTemplate.query(sql,new LogRowMapper());
         }
         catch (Exception e)
         {
-            return null;
+            System.out.println("exception "+e);
         }
+        return logs;
     }
 
     @Override
     public List<Logs> getSpecificLogs(int id) {
         logger.info("inside get logs of particular opportunity ");
         String sql = "SELECT * from logs where opportunityId="+id+ ";";
-        List<Logs> logs = jdbcTemplate.query(sql,new LogRowMapper());
-        System.out.println("particular logs are "+logs + id);
+        List<Logs> logs = new ArrayList<>();
+        try{
+            logs = jdbcTemplate.query(sql,new LogRowMapper());
+        }
+        catch (Exception e)
+        {
+            logger.error("Error to get specific log"+e);
+        }
         return logs;
     }
-
-
 }

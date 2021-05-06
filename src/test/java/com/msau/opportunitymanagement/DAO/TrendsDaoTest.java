@@ -1,5 +1,6 @@
 package com.msau.opportunitymanagement.DAO;
 
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.msau.opportunitymanagement.Exceptions.NoRecordFound;
 import com.msau.opportunitymanagement.Models.Opportunity;
 import org.junit.Assert;
@@ -10,13 +11,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +42,7 @@ public class TrendsDaoTest {
     @Mock
     OpportunityDAOImpl opportunityDAO;
 
-    @InjectMocks
+    @Autowired
     TrendsDaoImpl trendsDao;
 
     int opp;
@@ -54,21 +59,21 @@ public class TrendsDaoTest {
     public void shouldGetAllSkill() throws NoRecordFound {
 
         List<Map<String, String>> list = new ArrayList<Map<String,String>>();
-//		Mockito.doThrow(new Exception()).when(jdbcTemplate).query(
-//			    Mockito.anyString(),
-//			    Mockito.any(RowCallbackHandler.class));
-        int x = opportunityDAO.addOpportunity(new Opportunity());
+
         list = trendsDao.getSkills("skills");
         System.out.println(list);
-        Assert.assertEquals(1,list.size()+1);
+        Assert.assertEquals(2,list.size());
     }
     @Test
     public void shouldGetAllTrends() throws NoRecordFound {
-
+        System.out.println("hereeee");
         List<Map<String, String>> list = new ArrayList<Map<String,String>>();
-//		Mockito.doThrow(new Exception()).when(jdbcTemplate).query(
-//			    Mockito.anyString(),
-//			    Mockito.any(RowCallbackHandler.class));
-        trendsDao.getTrends("skills");
+        System.out.println("theereeee");
+//        ArrayNode x = mapper.createArrayNode();
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode x = mapper.createArrayNode();
+        x = trendsDao.getTrends("skills");
+        System.out.println("now "+x);
+        Assert.assertEquals(4,x.size());
     }
 }

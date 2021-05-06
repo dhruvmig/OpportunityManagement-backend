@@ -69,23 +69,26 @@ public class OpportunityDAOImpl implements OpportunityDao{
             Random r = new Random( System.currentTimeMillis() );
             int id = ((1 + r.nextInt(2)) * 1000000 + r.nextInt(1000000));
             opportunity.setId(id);
-            System.out.println("id is "+id);
-            System.out.println("id is "+opportunity.getId());
             String sql  = "INSERT into opportunity(id,ed,date,location,skills,description,createdBy,status,updatedAt) VALUES (?,?,?,?,?,?,?,?,?);";
-            jdbcTemplate.update(sql, new Object[]{opportunity.getId(),opportunity.getED(), opportunity.getDate(), opportunity.getLocation(), opportunity.getSkills(),opportunity.getDescription(),opportunity.getCreatedBy(),opportunity.getStatus(),opportunity.getUpdatedAt() });
+            jdbcTemplate.update(sql, new Object[]{opportunity.getId(),
+                    opportunity.getED(),
+                    opportunity.getDate(),
+                    opportunity.getLocation(),
+                    opportunity.getSkills(),
+                    opportunity.getDescription(),
+                    opportunity.getCreatedBy(),
+
+                    opportunity.getStatus(),opportunity.getUpdatedAt() });
             Logs newLog = new Logs();
             newLog.setOpportunityId(opportunity.getId());
             newLog.setNewOpp(opportunity.toString());
             newLog.setOldOpp("null");
-            newLog.setAction("Added new Opportunity");
-
+            newLog.setAction("Added ");
             newLog.setUserId(opportunity.getCreatedBy());
             String userName = userDao.getUserName(opportunity.getCreatedBy());
-
             newLog.setName(userName);
             logDao.addLog(newLog);
-
-            return id;
+            return 1;
         }
         catch (Exception e)
         {
@@ -99,12 +102,8 @@ public class OpportunityDAOImpl implements OpportunityDao{
         log.info("inside delete opportunity DAO");
         String sql = "DELETE FROM opportunity WHERE id =?";
         System.out.println("current user is "+currentUser);
-        int index = jdbcTemplate.update(sql, new Object[]{id});
-        Logs newLog = new Logs();
-        newLog.setUserId(currentUser);
-        newLog.setNewOpp("null");
-        String userName = userDao.getUserName(currentUser);
         Opportunity x = null;
+        Logs newLog = new Logs();
         try{
             x = checkCreatedBy(id);
         }
@@ -113,9 +112,15 @@ public class OpportunityDAOImpl implements OpportunityDao{
 
         }
         newLog.setOldOpp(x.toString());
+        int index = jdbcTemplate.update(sql, new Object[]{id});
+
+        newLog.setUserId(currentUser);
+        newLog.setNewOpp("null");
+        String userName = userDao.getUserName(currentUser);
+
         newLog.setName(userName);
         newLog.setOpportunityId(id);
-        newLog.setAction("Deleted this Opportunity");
+        newLog.setAction("Deleted ");
         logDao.addLog(newLog);
         return index;
     }
@@ -129,11 +134,18 @@ public class OpportunityDAOImpl implements OpportunityDao{
 
         try{
 
-            int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(),  opportunity.getSkills(), opportunity.getLocation(),opportunity.getED(),opportunity.getDescription(),opportunity.getCreatedBy(),opportunity.getUpdatedAt(),id});
+            int index = jdbcTemplate.update(sql, new Object[]{opportunity.getDate(),
+                    opportunity.getSkills(),
+                    opportunity.getLocation(),
+                    opportunity.getED(),
+                    opportunity.getDescription(),
+                    opportunity.getCreatedBy(),
+                    opportunity.getUpdatedAt()
+                    ,id});
             Logs newLog = new Logs();
             newLog.setNewOpp(opportunity.toString());
             newLog.setOpportunityId(id);
-            newLog.setAction("Updated this Opportunity");
+            newLog.setAction("Updated ");
             newLog.setUserId(currentUser);
             String userName = userDao.getUserName(currentUser);
             newLog.setName(userName);
@@ -152,11 +164,11 @@ public class OpportunityDAOImpl implements OpportunityDao{
         System.out.println("current user is "+currentUser);
         Logs newLog = new Logs();
         newLog.setUserId(currentUser);
-//        Opportunity x = null;
-//        try {
-//             x = checkCreatedBy(id);
-//        }catch (Exception e){}
-//        newLog.setOldOpp(x.toString());
+        Opportunity x = null;
+        try {
+             x = checkCreatedBy(id);
+        }catch (Exception e){}
+        newLog.setOldOpp(x.toString());
         newLog.setNewOpp("null");
         String userName = userDao.getUserName(currentUser);
 
@@ -165,8 +177,6 @@ public class OpportunityDAOImpl implements OpportunityDao{
             int index = jdbcTemplate.update(sql, new Object[]{id});
             newLog.setOpportunityId(id);
             newLog.setAction("Deleted this Opportunity");
-
-//        System.out.println("current log is "+newLog);
             logDao.addLog(newLog);
             return index;
         }catch (Exception e){return 0;}

@@ -48,6 +48,9 @@ public class OpportunityDaoTest {
     @InjectMocks
     OpportunityDAOImpl opportunityDAO;
 
+    @Autowired
+    OpportunityDAOImpl oppDao;
+
     private UserDaoImpl userDaoMock;
     private LogDaoImpl logDaoMock;
     int opp;
@@ -98,44 +101,40 @@ public class OpportunityDaoTest {
                 (Object[])Mockito.any()
         )).thenReturn(1);
 
-//        Mockito.when(userDao.insertUser())
         int result = opportunityDAO.addOpportunity(new Opportunity(1,"DM","java","2021-05-12","rajpura","description","1002"));
         System.out.println("result is     "+result);
         Assert.assertEquals(1, result);
     }
 
     @Test
-    public void shouldDelOppo() {
-        int tomatch = 8;
-        userDao.insertUser(new User("dhruv","dmiglani@gmail.com","104480558873341659614","lskdjfldsjlfjsldjflssjdflksjdf",null),"lskdjfldsjlfjsldjflssjdflksjdf");
-        Mockito.when(jdbcTemplate.update(
-                Mockito.anyString(),
-                (Object[])Mockito.any()
-        )).thenReturn(tomatch);
-        int result =opportunityDAO.deleteOpportunity(opp,"104480558873341659614");
-        Assert.assertEquals(1, 1);
+    public void shouldDelOppo() throws NoRecordFound {
+
+        int result = oppDao.deleteOpportunity(2876302,"104480558873341659614");
+        Assert.assertEquals(1,result);
     }
 
 
     @Test
-    public void shouldUpdateOppo() {
+    public void shouldUpdateOppo() throws NoRecordFound {
         Mockito.when(jdbcTemplate.update(
                 Mockito.anyString(),
                 (Object[])Mockito.anyVararg()
         )).thenReturn(1);
-        int result = opportunityDAO.updateOpportunity(new Opportunity(),1,"12543");
-        Assert.assertEquals(0, result);
+        int result = oppDao.updateOpportunity(new Opportunity(),2895785,"12543");
+        Assert.assertEquals(1, result);
     }
 
     @Test
     public void shouldDeactivateOppo() throws NoRecordFound {
-        int tomatch = 8;
-        userDao.insertUser(new User("dhruv","dmiglani@gmail.com","104480558873341659614","lskdjfldsjlfjsldjflssjdflksjdf",null),"lskdjfldsjlfjsldjflssjdflksjdf");
-        Mockito.when(jdbcTemplate.update(
-                Mockito.anyString(),
-                (Object[])Mockito.any()
-        )).thenReturn(tomatch);
-        int result =opportunityDAO.deactivateOpportunity(opp,"104480558873341659614");
-        Assert.assertEquals(1, 1);
+
+        int result = oppDao.deactivateOpportunity(2895785,"104480558873341659614");
+        Assert.assertEquals(1,result);
     }
+
+    @Test
+    public void checkCreatedBy() throws NoRecordFound {
+        Opportunity x = oppDao.checkCreatedBy(2083096);
+        Assert.assertEquals(x.getED(),"Dhruv");
+    }
+
 }
