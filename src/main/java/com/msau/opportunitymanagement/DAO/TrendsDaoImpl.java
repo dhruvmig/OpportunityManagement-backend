@@ -26,22 +26,22 @@ public class TrendsDaoImpl implements TrendsDao{
     public TrendsDaoImpl(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
     }
-
     @Override
     public List<Map<String, String>> getSkills(String trend) {
         logger.info("inside get Trends DAO");
         String sql="SELECT "+trend+", count(*) FROM opportunity GROUP BY "+trend+"; ";
         System.out.println(sql);
         List<Map<String,String>> item = new ArrayList<>();
-         jdbcTemplate.query(sql, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException{
-                System.out.println("class is "+rs.getClass()+"\t hello"+rs.toString());
-                Map<String, String> x = new HashMap<>();
-                x.put("name",rs.getString(1));
-                x.put("value",rs.getString(2));
-                item.add(x);
-                System.out.println(x);
+        try{
+            jdbcTemplate.query(sql, new RowCallbackHandler() {
+                @Override
+                public void processRow(ResultSet rs) throws SQLException{
+                    System.out.println("class is "+rs.getClass()+"\t hello"+rs.toString());
+                    Map<String, String> x = new HashMap<>();
+                    x.put("name",rs.getString(1));
+                    x.put("value",rs.getString(2));
+                    item.add(x);
+                    System.out.println(x);
                     while(rs.next())
                     {
                         Map<String, String> t = new HashMap<>();
@@ -50,28 +50,27 @@ public class TrendsDaoImpl implements TrendsDao{
                         System.out.println("tis "+t);
                         item.add(t);
                     }
-            }
-        });
-        return item;
-    }
+                }
+            });
+            return item;
+        }
+        catch (Exception e)
+        {
+            System.out.println("exceptoin is "+e);
+        }
 
-    @Override
-//    public void getTrends() {
-//        String query = "select year(date), skills, count(*) from opportunity group by year(date), skills order by year(date);";
-//
-//    }
+        return  null;
+
+    }
     public ArrayNode getTrends(String trend) {
         String Query="select year(date),"+ trend+", count(*) from opportunity group by year(date), "+ trend+" order by year(date); ";
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode outerList = mapper.createArrayNode();
-
-
         jdbcTemplate.query(Query, new RowCallbackHandler() {
             public void processRow(ResultSet resultSet) throws SQLException {
                 ArrayNode innerList = mapper.createArrayNode();
                 ObjectNode innerNode = mapper.createObjectNode();
                 ObjectNode outerNode = mapper.createObjectNode();
-
                 innerNode.put("name", resultSet.getString(2));
                 innerNode.put("value", resultSet.getString(3));
                 innerList.add(innerNode);

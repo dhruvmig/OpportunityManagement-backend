@@ -14,6 +14,8 @@ public class OpportunityRowMapper implements RowMapper<Opportunity> {
         // TODO Auto-generated method stub
         Opportunity opportunity = new Opportunity();
 
+        opportunity.setStatus(rs.getString("status"));
+        opportunity.setUpdatedAt(rs.getString("updatedAt"));
         opportunity.setId(rs.getInt("id"));
         opportunity.setDate(rs.getString("date"));
         opportunity.setED(rs.getString("ed"));

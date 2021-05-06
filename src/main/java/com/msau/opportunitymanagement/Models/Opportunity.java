@@ -15,6 +15,8 @@ public class Opportunity implements Serializable {
     private String location;
     private String description;
     private String createdBy;
+    private String status;
+    private String updatedAt;
 
     public Opportunity() { }
 
@@ -26,6 +28,22 @@ public class Opportunity implements Serializable {
         this.location = location;
         this.description = description;
         this.createdBy = createdBy;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getCreatedBy() {
@@ -85,6 +103,8 @@ public class Opportunity implements Serializable {
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", createdBy='" + createdBy + '\'' +
+                ", status='" + status + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
                 '}';
     }
 }

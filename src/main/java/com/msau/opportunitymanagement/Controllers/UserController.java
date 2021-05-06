@@ -26,7 +26,7 @@ public class UserController {
         user.setToken(token);
         if(userDao.findUser(user.getEmail())!=null)
         {
-            logger.info("User record exists");
+            logger.info("User record exists"+user);
             return userDao.updateUser(user,token);
         }
         else {
@@ -36,6 +36,7 @@ public class UserController {
     }
 
     @ResponseBody
+    @PostMapping(path="/getUser")
     public String getUserName(@RequestBody String id)
     {
         logger.info("Inside get username controller");

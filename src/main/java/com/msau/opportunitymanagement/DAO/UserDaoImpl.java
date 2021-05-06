@@ -43,6 +43,7 @@ public class UserDaoImpl implements  UserDao{
     @Override
     public User updateUser(User u, String token) {
         logger.info("inside update user");
+        System.out.println("user here isi "+u);
         String sql = "UPDATE user SET  token=? where email=?";
         int x= jdbcTemplate.update(sql,new Object[]{u.getToken(),u.getEmail()});
         return u;
@@ -50,6 +51,7 @@ public class UserDaoImpl implements  UserDao{
 
     @Override
     public String getUserName(String id) {
+        logger.info("inside get user name"+id);
         String sql = "SELECT * from user where id="+id+";";
         try{
             User x = jdbcTemplate.queryForObject(sql,new UserRowMapper());

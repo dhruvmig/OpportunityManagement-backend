@@ -22,7 +22,7 @@ public class LogDaoImpl implements LogDao {
     }
 
     @Override
-    public Logs addLog(Logs log) {
+    public int addLog(Logs log) {
         logger.info("Inside add log");
         log.setLogId(new Random().nextInt(100));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -34,12 +34,12 @@ public class LogDaoImpl implements LogDao {
         try{
             int index = jdbcTemplate.update(sql, new Object[]{log.getLogId(), log.getAction(), log.getUserId(), log.getOpportunityId(), log.getDateTime(),log.getName(),log.getOldOpp(),log.getNewOpp()});
             System.out.println("log added");
-            return log;
+            return index;
         }
         catch (Exception e)
         {
             System.out.println("exception to add log"+e);
-            return null;
+            return 0;
         }
 
     }

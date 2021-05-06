@@ -10,12 +10,16 @@ public interface OpportunityDao {
 
     List<Opportunity> getOpportunities() throws NoRecordFound;
 
-    Opportunity addOpportunity(Opportunity opportunity);
+    int addOpportunity(Opportunity opportunity);
 
     int deleteOpportunity(int id,String currentUser);
 
+    int deactivateOpportunity(int id,String currentUser);
+
+    public List<Opportunity> getAllOpportunities();
+
     int updateOpportunity(Opportunity opportunity,int id,String currentUser);
 
-    Opportunity checkCreatedBy(int id);
+    Opportunity checkCreatedBy(int id) throws NoRecordFound;
 
 }

@@ -30,10 +30,10 @@ public class LogsController {
     @PostMapping(path="/addAudit")
     public int addLogs(@RequestBody Logs logs){
         logger.info("inside add logs controller");
-        Logs l = logsDao.addLog(logs);
-
-        return 1;
+        int l = logsDao.addLog(logs);
+        return l;
     }
+
     @GetMapping(path="/getAudits/{id}")
     public List<Logs> getLogs(@PathVariable("id")int id)
     {

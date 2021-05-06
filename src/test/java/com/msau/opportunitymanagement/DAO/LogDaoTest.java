@@ -57,4 +57,15 @@ public class LogDaoTest {
         List<Logs> result = logDao.getSpecificLogs(1000);
         Assert.assertEquals(1, 1);
     }
+
+    @Test
+    public void shouldAddLogs(){
+            Mockito.when(jdbcTemplate.update(
+                    Mockito.anyString(),
+                    (Object[]) Mockito.any()
+            )).thenReturn(1);
+            int res = logDao.addLog(new Logs());
+        System.out.println("resulte here i s+"+res);
+        Assert.assertEquals(res,1);
+    }
 }

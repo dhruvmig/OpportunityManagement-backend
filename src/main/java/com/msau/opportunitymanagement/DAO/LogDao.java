@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LogDao {
 
-    public Logs addLog(Logs log);
+    public int addLog(Logs log);
     public List<Logs> getLogs();
 
     public List<Logs> getSpecificLogs(int id);
